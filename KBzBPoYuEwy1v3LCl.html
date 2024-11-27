@@ -1,0 +1,205 @@
+<html><head><base href="/" />
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000; /* Changed to black background */
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Lightning animation */
+  @keyframes lightning {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    15% { opacity: 0; }
+    25% { opacity: 1; }
+    30% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  .lightning {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .lightning path {
+    stroke: rgba(255, 255, 255, 0.8);
+    stroke-width: 2;
+    fill: none;
+    animation: lightning 5s infinite;
+  }
+
+  .login-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+  }
+
+  .login-container:hover {
+    transform: translateY(-5px);
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .login-header svg {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #666;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #667eea;
+  }
+
+  button {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  button:hover {
+    transform: scale(1.02);
+  }
+
+  .error-message {
+    color: #ff4444;
+    margin-top: 1rem;
+    text-align: center;
+    display: none;
+  }
+
+  .success-message {
+    color: #00C851;
+    margin-top: 1rem;
+    text-align: center;
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <svg class="lightning">
+    <path d="M300,0 L280,100 L400,150 L200,300 L300,200 L100,400">
+      <animate attributeName="d" 
+               dur="5s"
+               repeatCount="indefinite"
+               values="M300,0 L280,100 L400,150 L200,300 L300,200 L100,400;
+                      M310,0 L290,110 L410,160 L210,310 L310,210 L110,410;
+                      M300,0 L280,100 L400,150 L200,300 L300,200 L100,400"/>
+    </path>
+    <path d="M500,20 L480,120 L600,170 L400,320 L500,220 L300,420"
+          style="animation-delay: 1.5s">
+      <animate attributeName="d"
+               dur="5s"
+               repeatCount="indefinite"
+               values="M500,20 L480,120 L600,170 L400,320 L500,220 L300,420;
+                      M510,30 L490,130 L610,180 L410,330 L510,230 L310,430;
+                      M500,20 L480,120 L600,170 L400,320 L500,220 L300,420"/>
+    </path>
+  </svg>
+
+  <div class="login-container">
+    <div class="login-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      <h2>Welcome Back</h2>
+    </div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required>
+      </div>
+      <button type="submit">Log In</button>
+    </form>
+    <div id="errorMessage" class="error-message">Invalid email or password!</div>
+    <div id="successMessage" class="success-message">Login successful!</div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+
+      // This is a mock validation - in a real application, you would validate against a backend
+      if (email === 'test@example.com' && password === 'password123') {
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'block';
+        
+        // Simulate a redirect after successful login
+        setTimeout(() => {
+          alert('In a real application, you would be redirected to the dashboard');
+        }, 1500);
+      } else {
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'block';
+      }
+    });
+
+    // Add some nice input animations
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'translateY(-2px)';
+      });
+
+      input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'translateY(0)';
+      });
+    });
+  </script>
+</body></html>
